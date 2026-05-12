@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CHAAP 2026 WhatsApp Agent</title>
+
+  <style>
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    body{
+      font-family:Arial, sans-serif;
+      background:#f2f2f2;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:100vh;
+      padding:20px;
+    }
+
+    .phone{
+      width:390px;
+      height:800px;
+      background:#ECE5DD;
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:0 10px 40px rgba(0,0,0,0.2);
+      display:flex;
+      flex-direction:column;
+    }
+
+    .chat-head{
+      background:#075E54;
+      padding:14px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:#fff;
+    }
+
+    .avatar{
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      background:#25D366;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:bold;
+      font-size:18px;
+    }
+
+    .chat-name{
+      font-size:16px;
+      font-weight:600;
+    }
+
+    .chat-status{
+      font-size:12px;
+      color:#cfe9e6;
+    }
+
+    .messages{
+      flex:1;
+      overflow-y:auto;
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .msg{
+      max-width:85%;
+      padding:10px 12px;
+      border-radius:10px;
+      font-size:14px;
+      line-height:1.5;
+    }
+
+    .bot{
+      background:#fff;
+      align-self:flex-start;
+      border-radius:0 10px 10px 10px;
+    }
+
+    .user{
+      background:#DCF8C6;
+      align-self:flex-end;
+      border-radius:10px 10px 0 10px;
+    }
+
+    .quick-replies{
+      padding:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      background:#ECE5DD;
+    }
+
+    .reply-btn{
+      border:none;
+      background:#fff;
+      color:#075E54;
+      border:1px solid #25D366;
+      border-radius:20px;
+      padding:8px 14px;
+      cursor:pointer;
+      font-size:13px;
+    }
+
+    .reply-btn:hover{
+      background:#e8f5e9;
+    }
+
+    .input-row{
+      background:#f0f0f0;
+      padding:10px;
+      display:flex;
+      gap:10px;
+    }
+
+    input{
+      flex:1;
+      border:none;
+      border-radius:20px;
+      padding:12px 14px;
+      font-size:14px;
+      outline:none;
+    }
+
+    button.send{
+      border:none;
+      width:46px;
+      height:46px;
+      border-radius:50%;
+      background:#075E54;
+      color:#fff;
+      cursor:pointer;
+      font-size:18px;
+    }
+
+    .start{
+      padding:16px;
+      background:#fff;
+      text-align:center;
+      border-bottom:1px solid #ddd;
+    }
+
+    .start button{
+      background:#25D366;
+      color:#fff;
+      border:none;
+      padding:10px 18px;
+      border-radius:30px;
+      cursor:pointer;
+      font-size:14px;
+      margin-top:10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="phone">
+
+  <div class="chat-head">
+    <div class="avatar">C</div>
+
+    <div>
+      <div class="chat-name">CHAAP 2026</div>
+      <div class="chat-status">Online</div>
+    </div>
+  </div>
+
+  <div class="start">
+    <div>📱 Scan QR to start experience</div>
+    <button onclick="startChat()">Start CHAAP Experience</button>
+  </div>
+
+  <div class="messages" id="messages"></div>
+
+  <div class="quick-replies" id="replies"></div>
+
+  <div class="input-row">
+    <input type="text" id="userInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendMessage()">
+    <button class="send" onclick="sendMessage()">➤</button>
+  </div>
+
+</div>
+
+<script>
+
+const messages = document.getElementById("messages");
+const replies = document.getElementById("replies");
+
+function addMessage(text, type="bot"){
+
+  const msg = document.createElement("div");
+  msg.className = `msg ${type}`;
+
+  msg.innerHTML = text
+    .replace(/\n/g,"<br>")
+    .replace(/\*(.*?)\*/g,"<strong>$1</strong>");
+
+  messages.appendChild(msg);
+
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function showReplies(arr){
+
+  replies.innerHTML = "";
+
+  arr.forEach(item=>{
+
+    const btn = document.createElement("button");
+
+    btn.className = "reply-btn";
+
+    btn.innerText = item;
+
+    btn.onclick = ()=>handleReply(item);
+
+    replies.appendChild(btn);
+
+  });
+}
+
+function startChat(){
+
+  messages.innerHTML = "";
+
+  addMessage("Hi 👋","user");
+
+  setTimeout(()=>{
+
+    addMessage(
+`✨ *Welcome to CHAAP 2026* ✨
+
+Step into a vibrant celebration of art, culture, creativity & experiences! 🎨🌿`
+);
+
+  },600);
+
+  setTimeout(()=>{
+
+    addMessage(
+`We’re excited to have you with us at *CHAAP 2026*.
+
+Explore immersive art installations, creative zones, performances, workshops, food stalls and interactive spaces across the venue.`
+);
+
+  },1400);
+
+  setTimeout(()=>{
+
+    addMessage(
+`📍 *Event Map & Navigation:*
+
+https://www.google.com/maps/d/u/0/edit?mid=1YWG8OrVNsmA7NMfJzb6EHAJsPgTH940&usp=sharing`
+);
+
+  },2200);
+
+  setTimeout(()=>{
+
+    addMessage(
+`🖼️ *Major Art Locations:*
+
+• Central Lawn – Main Art Installations
+• Riverfront Path – Interactive Art Walk
+• Design Studio Zone – Student Exhibitions
+• Auditorium Foyer – Featured Displays
+• SAC Area – Workshops & Activities
+• Fashion Communication Block – Visual Arts Showcase`
+);
+
+  },3000);
+
+  setTimeout(()=>{
+
+    addMessage(
+`🧭 Directional signages are placed throughout the venue for easy navigation.
+
+We hope you have an inspiring and memorable experience at *CHAAP*! 🌸
+
+#CHAAP2026 #ArtFair #CreativeSpaces`
+);
+
+    showReplies([
+      "🗺️ Event Map",
+      "🎭 Activities",
+      "📅 Schedule",
+      "🖼️ Art Installations",
+      "📸 Interactive Zones",
+      "⭐ Feedback"
+    ]);
+
+  },3800);
+
+}
+
+function handleReply(text){
+
+  addMessage(text,"user");
+
+  replies.innerHTML = "";
+
+  setTimeout(()=>{
+
+    if(text.includes("Map")){
+
+      addMessage(
+`📍 *CHAAP Navigation*
+
+Use the live venue map here:
+
+https://www.google.com/maps/d/u/0/edit?mid=1YWG8OrVNsmA7NMfJzb6EHAJsPgTH940&usp=sharing`
+);
+
+    }
+
+    else if(text.includes("Activities")){
+
+      addMessage(
+`🎭 *Activities at CHAAP*
+
+• Live Workshops
+• Interactive Installations
+• Craft Demonstrations
+• Art Performances
+• Creative Zones
+• Food Experiences`
+);
+
+    }
+
+    else if(text.includes("Schedule")){
+
+      addMessage(
+`📅 *Today's Highlights*
+
+11:00 AM — Art Walk  
+1:00 PM — Design Workshop  
+3:00 PM — Live Performance  
+5:00 PM — Interactive Installation Experience`
+);
+
+    }
+
+    else if(text.includes("Installations")){
+
+      addMessage(
+`🖼️ *Featured Installations*
+
+• Immersive Light Tunnel  
+• Interactive Mirror Space  
+• Projection Mapping Dome  
+• Handmade Textile Gallery`
+);
+
+    }
+
+    else if(text.includes("Interactive")){
+
+      addMessage(
+`📸 *Interactive Zones*
+
+• Photo Booths  
+• Digital Projection Spaces  
+• Community Art Wall  
+• Motion Sensor Installations`
+);
+
+    }
+
+    else if(text.includes("Feedback")){
+
+      addMessage(
+`⭐ Thank you for visiting CHAAP 2026!
+
+Your feedback helps us improve future experiences 🌸`
+);
+
+    }
+
+  },700);
+
+}
+
+function sendMessage(){
+
+  const input = document.getElementById("userInput");
+
+  const text = input.value.trim();
+
+  if(!text) return;
+
+  addMessage(text,"user");
+
+  input.value = "";
+
+  setTimeout(()=>{
+
+    addMessage(
+`✨ Thank you for your message!
+
+Our CHAAP assistant will guide you through the event experience.`
+);
+
+  },700);
+
+}
+
+</script>
+
+</body>
+</html>
