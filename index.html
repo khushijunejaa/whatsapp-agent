@@ -79,6 +79,7 @@
       border-radius:10px;
       font-size:14px;
       line-height:1.5;
+      word-break:break-word;
     }
 
     .bot{
@@ -160,6 +161,11 @@
       font-size:14px;
       margin-top:10px;
     }
+
+    a{
+      color:#128C7E;
+      text-decoration:underline;
+    }
   </style>
 </head>
 
@@ -200,11 +206,18 @@ const replies = document.getElementById("replies");
 function addMessage(text, type="bot"){
 
   const msg = document.createElement("div");
+
   msg.className = `msg ${type}`;
 
-  msg.innerHTML = text
+  const formattedText = text
+    .replace(
+      /(https?:\/\/[^\s]+)/g,
+      '<a href="$1" target="_blank">$1</a>'
+    )
     .replace(/\n/g,"<br>")
     .replace(/\*(.*?)\*/g,"<strong>$1</strong>");
+
+  msg.innerHTML = formattedText;
 
   messages.appendChild(msg);
 
