@@ -212,7 +212,7 @@ function addMessage(text, type="bot"){
   const formattedText = text
     .replace(
       /(https?:\/\/[^\s]+)/g,
-      '<a href="$1" target="_blank">$1</a>'
+      '<a href="$1" target="_blank" style="color:#128C7E;text-decoration:underline;display:block;overflow-wrap:anywhere;word-break:break-word;">Open Google Map</a>'
     )
     .replace(/\n/g,"<br>")
     .replace(/\*(.*?)\*/g,"<strong>$1</strong>");
@@ -223,6 +223,7 @@ function addMessage(text, type="bot"){
 
   messages.scrollTop = messages.scrollHeight;
 }
+
 
 function showReplies(arr){
 
